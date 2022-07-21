@@ -29,11 +29,12 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 }
 
 func init() {
-	b, err := tele.NewBot(tele.Settings{
+	var err error
+	bot, err = tele.NewBot(tele.Settings{
 		Token:       os.Getenv("QMRBOT_TELEGRAM_TOKEN"),
 		Synchronous: true,
 	})
 	common.Must(err)
 
-	features.Handle(b)
+	features.Handle(bot)
 }
