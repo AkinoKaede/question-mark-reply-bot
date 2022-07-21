@@ -23,6 +23,17 @@ func OnText(c tele.Context) error {
 	return nil
 }
 
+func OnSticker(c tele.Context) error {
+	sticker := c.Message().Sticker
+
+	if sticker.Emoji == "❓" {
+		c.Reply(sticker)
+	}
+
+	return nil
+}
+
 func init() {
 	features.RegisterFeature(tele.OnText, OnText)
+	features.RegisterFeature(tele.OnSticker, OnSticker)
 }
