@@ -19,15 +19,15 @@ func OnText(c tele.Context) error {
 		}
 	}
 
-	c.Reply(text)
-	return nil
+	return c.Reply(text)
+
 }
 
 func OnSticker(c tele.Context) error {
 	sticker := c.Message().Sticker
 
 	if sticker.Emoji == "❓" {
-		c.Reply(sticker)
+		return c.Reply(sticker)
 	}
 
 	return nil
