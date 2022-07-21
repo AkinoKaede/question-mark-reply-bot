@@ -10,11 +10,11 @@ import (
 	"github.com/AkinoKaede/question-mark-reply-bot/features"
 	_ "github.com/AkinoKaede/question-mark-reply-bot/main/distro/all"
 
-	tb "gopkg.in/telebot.v3"
+	tele "gopkg.in/telebot.v3"
 )
 
 var (
-	bot *tb.Bot
+	bot *tele.Bot
 )
 
 func Handler(w http.ResponseWriter, r *http.Request) {
@@ -22,14 +22,14 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	body, err := io.ReadAll(r.Body)
 	common.Must(err)
 
-	var u tb.Update
+	var u tele.Update
 	common.Must(json.Unmarshal(body, &u))
 
 	bot.ProcessUpdate(u)
 }
 
 func init() {
-	b, err := tb.NewBot(tb.Settings{
+	b, err := tele.NewBot(tele.Settings{
 		Token:       os.Getenv("QMRBOT_TELEGRAM_TOKEN"),
 		Synchronous: true,
 	})

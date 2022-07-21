@@ -8,13 +8,13 @@ import (
 	"github.com/AkinoKaede/question-mark-reply-bot/features"
 	_ "github.com/AkinoKaede/question-mark-reply-bot/main/distro/all"
 
-	tb "gopkg.in/telebot.v3"
+	tele "gopkg.in/telebot.v3"
 )
 
 func main() {
-	b, err := tb.NewBot(tb.Settings{
+	b, err := tele.NewBot(tele.Settings{
 		Token:  os.Getenv("QMRBOT_TELEGRAM_TOKEN"),
-		Poller: &tb.LongPoller{Timeout: 10 * time.Second},
+		Poller: &tele.LongPoller{Timeout: 10 * time.Second},
 	})
 	common.Must(err)
 

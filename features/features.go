@@ -1,24 +1,24 @@
 package features
 
 import (
-	tb "gopkg.in/telebot.v3"
+	tele "gopkg.in/telebot.v3"
 )
 
 type Feature struct {
-	Handler    tb.HandlerFunc
-	Middleware []tb.MiddlewareFunc
+	Handler    tele.HandlerFunc
+	Middleware []tele.MiddlewareFunc
 }
 
 var features = make(map[interface{}]*Feature)
 
-func RegisterFeature(endpoint interface{}, handler tb.HandlerFunc, middleware ...tb.MiddlewareFunc) {
+func RegisterFeature(endpoint interface{}, handler tele.HandlerFunc, middleware ...tele.MiddlewareFunc) {
 	features[endpoint] = &Feature{
 		Handler:    handler,
 		Middleware: middleware,
 	}
 }
 
-func Handle(b *tb.Bot) {
+func Handle(b *tele.Bot) {
 	for endpoint, feature := range features {
 		b.Handle(endpoint, feature.Handler, feature.Middleware...)
 	}
