@@ -1,23 +1,20 @@
 package features
 
 import (
-	"context"
-
-	"github.com/AkinoKaede/question-mark-reply-bot/common/session"
+	tb "gopkg.in/telebot.v3"
 )
 
-type FeatureFunc func(context.Context) interface{}
+// type FeatureFunc func(context.Context) tb.HandlerFunc
 
-var features = make(map[interface{}]FeatureFunc)
+var features = make(map[interface{}]tb.HandlerFunc)
 
-func RegisterFeature(endpoint interface{}, feature FeatureFunc) {
+func RegisterFeature(endpoint interface{}, feature tb.HandlerFunc) {
 	features[endpoint] = feature
 }
 
-func Handle(ctx context.Context) {
-	b := session.BotFromContext(ctx)
+func Handle(b *tb.Bot) {
 
 	for endpoint, feature := range features {
-		b.Handle(endpoint, feature(ctx))
+		b.Handle(endpoint, feature)
 	}
 }

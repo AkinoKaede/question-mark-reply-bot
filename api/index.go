@@ -1,26 +1,23 @@
 package api
 
 import (
-	"context"
 	"encoding/json"
 	"io"
 	"net/http"
 	"os"
 
 	"github.com/AkinoKaede/question-mark-reply-bot/common"
-	"github.com/AkinoKaede/question-mark-reply-bot/common/session"
 	"github.com/AkinoKaede/question-mark-reply-bot/features"
 	_ "github.com/AkinoKaede/question-mark-reply-bot/main/distro/all"
 
-	tb "gopkg.in/tucnak/telebot.v2"
+	tb "gopkg.in/telebot.v3"
 )
 
 var (
-	ctx = context.Background()
+	bot *tb.Bot
 )
 
 func Handler(w http.ResponseWriter, r *http.Request) {
-	b := session.BotFromContext(ctx)
 
 	body, err := io.ReadAll(r.Body)
 	common.Must(err)
@@ -28,7 +25,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	var u tb.Update
 	common.Must(json.Unmarshal(body, &u))
 
-	b.ProcessUpdate(u)
+	bot.ProcessUpdate(u)
 }
 
 func init() {
@@ -38,6 +35,5 @@ func init() {
 	})
 	common.Must(err)
 
-	ctx = session.ContextWithBot(ctx, b)
-	features.Handle(ctx)
+	features.Handle(b)
 }

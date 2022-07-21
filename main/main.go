@@ -1,16 +1,14 @@
 package main
 
 import (
-	"context"
 	"os"
 	"time"
 
 	"github.com/AkinoKaede/question-mark-reply-bot/common"
-	"github.com/AkinoKaede/question-mark-reply-bot/common/session"
 	"github.com/AkinoKaede/question-mark-reply-bot/features"
 	_ "github.com/AkinoKaede/question-mark-reply-bot/main/distro/all"
 
-	tb "gopkg.in/tucnak/telebot.v2"
+	tb "gopkg.in/telebot.v3"
 )
 
 func main() {
@@ -20,9 +18,7 @@ func main() {
 	})
 	common.Must(err)
 
-	ctx := session.ContextWithBot(context.Background(), b)
-
-	features.Handle(ctx)
+	features.Handle(b)
 
 	b.Start()
 }
