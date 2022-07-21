@@ -7,7 +7,8 @@ import (
 )
 
 var (
-	QuestionMarks = []string{"?", "¿", "？", "❓", "❔"}
+	QuestionMarks      = append([]string{"?", "¿", "？"}, QuestionMarkEmojis...)
+	QuestionMarkEmojis = []string{"❓", "❔"}
 )
 
 func OnText(c tele.Context) error {
@@ -26,7 +27,7 @@ func OnText(c tele.Context) error {
 func OnSticker(c tele.Context) error {
 	sticker := c.Message().Sticker
 
-	if common.Contains(sticker.Emoji, []string{"❓", "❔"}) {
+	if common.Contains(sticker.Emoji, QuestionMarkEmojis) {
 		return c.Reply(sticker)
 	}
 
