@@ -15,36 +15,39 @@ var (
 )
 
 func OnText(c tele.Context) error {
+	var markCount int
 	text := c.Message().Text
+	textLen := utf8.RuneCountInString(text)
 
+	markCountMap := make(map[rune]int)
 	for _, b := range text {
-		if !common.Contains(b, QuestionMarks) {
-			return nil
-		}
+		markCountMap[b]++
 	}
 
-	if c.Message().ReplyTo != nil && len(text) > 1 {
-		markCount := make(map[rune]int)
-		for _, b := range text {
-			markCount[b]++
-		}
+	for _, mark := range QuestionMarks {
+		markCount += markCountMap[mark]
+	}
 
-		for k, v := range markCount {
-			if v == utf8.RuneCountInString(text) {
-				replyToText := c.Message().ReplyTo.Text
-				if strings.Count(replyToText, string(k)) == utf8.RuneCountInString(replyToText) {
-					replyMsg := &strings.Builder{}
-					replyMsg.WriteString(text)
-					replyMsg.WriteRune(k)
+	if markCount == textLen {
+		if c.Message().ReplyTo != nil && textLen > 1 {
+			for k, v := range markCountMap {
+				if v == textLen {
+					replyToText := c.Message().ReplyTo.Text
+					if strings.Count(replyToText, string(k)) == utf8.RuneCountInString(replyToText) {
+						replyMsg := &strings.Builder{}
+						replyMsg.WriteString(text)
+						replyMsg.WriteRune(k)
 
-					return c.Reply(replyMsg.String())
+						return c.Reply(replyMsg.String())
+					}
 				}
 			}
 		}
+
+		return c.Reply(text)
 	}
 
-	return c.Reply(text)
-
+	return nil
 }
 
 func OnSticker(c tele.Context) error {
