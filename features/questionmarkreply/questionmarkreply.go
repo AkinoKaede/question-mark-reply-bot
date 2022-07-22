@@ -2,6 +2,7 @@ package questionmarkreply
 
 import (
 	"strings"
+	"unicode/utf8"
 
 	"github.com/AkinoKaede/question-mark-reply-bot/common"
 	"github.com/AkinoKaede/question-mark-reply-bot/features"
@@ -9,15 +10,15 @@ import (
 )
 
 var (
-	QuestionMarks      = append([]string{"?", "¿", "？"}, QuestionMarkEmojis...)
-	QuestionMarkEmojis = []string{"❓", "❔"}
+	QuestionMarks      = append([]rune{'?', '¿', '？'}, QuestionMarkEmojis...)
+	QuestionMarkEmojis = []rune{'❓', '❔'}
 )
 
 func OnText(c tele.Context) error {
 	text := c.Message().Text
 
 	for _, b := range text {
-		if !common.Contains(string(b), QuestionMarks) {
+		if !common.Contains(b, QuestionMarks) {
 			return nil
 		}
 	}
@@ -48,8 +49,8 @@ func OnText(c tele.Context) error {
 
 func OnSticker(c tele.Context) error {
 	sticker := c.Message().Sticker
-
-	if common.Contains(sticker.Emoji, QuestionMarkEmojis) {
+	emoji, _ := utf8.DecodeLastRuneInString(sticker.Emoji)
+	if common.Contains(emoji, QuestionMarkEmojis) {
 		return c.Reply(sticker)
 	}
 
