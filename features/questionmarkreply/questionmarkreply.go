@@ -30,9 +30,9 @@ func OnText(c tele.Context) error {
 		}
 
 		for k, v := range markCount {
-			if v == len(text) {
+			if v == utf8.RuneCountInString(text) {
 				replyToText := c.Message().ReplyTo.Text
-				if strings.Count(replyToText, string(k)) == len(replyToText) {
+				if strings.Count(replyToText, string(k)) == utf8.RuneCountInString(replyToText) {
 					replyMsg := &strings.Builder{}
 					replyMsg.WriteString(text)
 					replyMsg.WriteRune(k)
@@ -49,7 +49,7 @@ func OnText(c tele.Context) error {
 
 func OnSticker(c tele.Context) error {
 	sticker := c.Message().Sticker
-	emoji, _ := utf8.DecodeLastRuneInString(sticker.Emoji)
+	emoji, _ := utf8.DecodeRuneInString(sticker.Emoji)
 	if common.Contains(emoji, QuestionMarkEmojis) {
 		return c.Reply(sticker)
 	}
