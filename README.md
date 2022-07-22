@@ -5,7 +5,7 @@ A Telegram bot for reply question marks.
 ## License
 
 ```
-Kiririn, A Telegram bot for reply question marks.
+Kiririn, a Telegram bot for reply question marks.
 Copyright (C) 2022 AkinoKaede <autmaple@protonmail.com>
 
 This program is free software: you can redistribute it and/or modify
