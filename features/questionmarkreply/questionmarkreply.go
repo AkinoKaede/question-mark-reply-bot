@@ -29,18 +29,29 @@ func OnText(c tele.Context) error {
 	}
 
 	if markCount == textLen {
-		if c.Message().ReplyTo != nil && textLen > 1 {
-			for k, v := range markCountMap {
-				if v == textLen {
-					replyToText := c.Message().ReplyTo.Text
-					if strings.Count(replyToText, string(k)) == utf8.RuneCountInString(replyToText) {
-						replyMsg := &strings.Builder{}
-						replyMsg.WriteString(text)
-						replyMsg.WriteRune(k)
+		if textLen > 1 {
+			if c.Message().ReplyTo != nil {
+				for k, v := range markCountMap {
+					if v == textLen {
+						replyToText := c.Message().ReplyTo.Text
+						if strings.Count(replyToText, string(k)) == utf8.RuneCountInString(replyToText) {
+							replyMsg := &strings.Builder{}
+							replyMsg.WriteString(text)
+							replyMsg.WriteRune(k)
 
-						return c.Reply(replyMsg.String())
+							return c.Reply(replyMsg.String())
+						}
 					}
 				}
+			}
+
+			if markCountMap['?']+markCountMap['¿'] == textLen && markCountMap['?'] != 0 && markCountMap['¿'] != 0 {
+				replyMsg := &strings.Builder{}
+				for _, r := range text {
+					replyMsg.WriteRune(r ^ 128)
+				}
+
+				return c.Reply(replyMsg.String())
 			}
 		}
 
