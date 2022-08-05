@@ -73,5 +73,5 @@ func OnSticker(c tele.Context) error {
 
 func init() {
 	features.RegisterFeature(tele.OnText, OnText)
-	features.RegisterFeature(tele.OnSticker, OnSticker)
+	features.RegisterFeature(tele.OnSticker, OnSticker, Random(10))
 }
