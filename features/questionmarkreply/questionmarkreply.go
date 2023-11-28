@@ -10,7 +10,7 @@ import (
 )
 
 var (
-	QuestionMarks      = append([]rune{'?', '¿', '？'}, QuestionMarkEmojis...)
+	QuestionMarks      = append([]rune{'?', '¿', '⁇', '︖', '﹖', '？', '？'}, QuestionMarkEmojis...)
 	QuestionMarkEmojis = []rune{'❓', '❔'}
 )
 
